@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ignore": ["node_modules", "dist", "src/**/*.spec.ts"],
+  "watch": ["src/**/*.ts"],
+  "execMap": {
+    "ts": "ts-node -r tsconfig-paths/register src/server.ts"
+  }
+}
