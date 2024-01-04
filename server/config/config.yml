@@ -1,0 +1,22 @@
+api:
+  uri: 'api'
+  version: 'v1'
+app:
+  host: '127.0.0.1'
+  port: 3000
+  logConfigPath: 'config/log4j.properties'
+  useHttps: true
+  httpsKey: 'config/ssl/privatekey.pem'
+  httpsCert: 'config/ssl/certificate.pem'
+  accessTokenSecret: '1234-5678-9012-3456'
+  refreshTokenSecret: '7890-1234-5678-9012'
+  accessTokenExpiresIn: 3600
+  refreshTokenExpiresIn: 86400
+  bcryptSaltRounds: 10
+db:
+  host: 'localhost'
+  port: 5432
+  user: 'admin'
+  password: 'admin'
+  name: 'calmx'
+  maxPoolSize: 10
