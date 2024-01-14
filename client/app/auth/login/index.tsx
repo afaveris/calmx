@@ -2,9 +2,11 @@ import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
 import { ButtonAuth } from '@/components/UI/ButtonAuth';
 import { InputLogin } from '@/components/UI/InputLogin';
 import { InputPassword } from '@/components/UI/InputPassword';
+import { ProfileDAO } from '@/data/profileDAO';
 import { ThemeColors } from '@/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -20,7 +22,7 @@ const Login = () => {
     login: '',
     password: '',
   });
-  console.log(loginData);
+  const db = new ProfileDAO(SQLite.openDatabase('database.db'));
   return (
     <BaseScreen>
       <SafeAreaView className="mt-24 flex h-screen justify-between">
@@ -100,7 +102,26 @@ const Login = () => {
           </View>
         </KeyboardAwareScrollView>
         <View className="flex items-center justify-center">
-          <ButtonAuth onPress={() => console.log('login')} textValue="Увійти" />
+          <ButtonAuth
+            onPress={async () => {
+              if (
+                loginData.login === 'admin' &&
+                loginData.password === 'admin'
+              ) {
+                await db.insertUser({
+                  id: 1,
+                  name: 'admin',
+                  login: 'test',
+                  password: 'test',
+                  dateOfBirth: '2000-01-01',
+                  interactionDate: '2021-01-01',
+                  interactionTime: 23,
+                });
+                router.push('/home');
+              }
+            }}
+            textValue="Увійти"
+          />
         </View>
       </SafeAreaView>
     </BaseScreen>

@@ -11,10 +11,12 @@ export class ProfileDAO implements iProfileDAO {
   public initUser = async (): Promise<void> => {
     await this.db.transactionAsync(async (tx) => {
       await tx.executeSqlAsync(
-        'CREATE TABLE IF NOT EXISTS profile' +
-          '(id INTEGER PRIMARY KEY NOT NULL, ' +
+        'CREATE TABLE IF NOT EXISTS profile (' +
+          'id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
           'name TEXT NOT NULL, ' +
-          'date_of_birth TEXT NOT NULL, ' +
+          'login TEXT NOT NULL, ' +
+          'password TEXT NOT NULL, ' +
+          'date_of_birth TIMESTAMP NOT NULL, ' +
           'interaction_time TIMESTAMP NOT NULL, ' +
           'interaction_date INTEGER NOT NULL);'
       );
@@ -22,19 +24,28 @@ export class ProfileDAO implements iProfileDAO {
   };
 
   public insertUser = async (user: User): Promise<void> => {
-    console.log(user);
-    await this.db.transactionAsync(async (tx) => {
-      await tx.executeSqlAsync(
-        'INSERT INTO profile (name, date_of_birth, interaction_time, interaction_date) ' +
-          'VALUES (?, ?, ?, ?);',
-        [
-          user.name,
-          user.dateOfBirth,
-          user.interactionTime,
-          user.interactionDate,
-        ]
-      );
-    });
+    try {
+      await this.db.transactionAsync(async (tx) => {
+        const describe = await tx.executeSqlAsync(
+          'PRAGMA table_info(profile);'
+        );
+        console.log(describe);
+        await tx.executeSqlAsync(
+          'INSERT INTO profile (name, login, password, date_of_birth, interaction_time, interaction_date) ' +
+            'VALUES (?, ?, ?, ?, ?, ?);',
+          [
+            user.name,
+            user.login,
+            user.password,
+            user.dateOfBirth,
+            user.interactionTime,
+            user.interactionDate,
+          ]
+        );
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   public getUser = async (): Promise<User | null> => {
@@ -54,8 +65,12 @@ export class ProfileDAO implements iProfileDAO {
   };
 
   public dropUser = async (): Promise<void> => {
-    await this.db.transactionAsync(async (tx) => {
-      await tx.executeSqlAsync('DELETE FROM profile;');
-    });
+    try {
+      await this.db.transactionAsync(async (tx) => {
+        await tx.executeSqlAsync('DROP TABLE profile;');
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }

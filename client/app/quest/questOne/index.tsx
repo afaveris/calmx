@@ -2,7 +2,7 @@ import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
 import { ThemeColors } from '@/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { Image, ImageProps, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -12,45 +12,39 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const items = [
   {
     id: 1,
-    img: require('@/assets/images/spider.png'),
-    title: 'Арахнофобія',
-    description: 'Павуки не такі страшні як тобі здається',
-    routePath: '/quest/questOne',
+    title: '1',
+    description: 'Спробуйте себе на витривалість',
+    routePath: '/quest/questOne/methodOnePartOne',
   },
   {
     id: 2,
-    img: require('@/assets/images/plane.png'),
-    title: 'Аерофобія',
-    description: 'Літак є одним з найбезпечніших видів транспорту',
-    routePath: '/quest/questTwo',
+    title: '2',
+    description: 'В процесі',
+    routePath: '/quest/questOne',
   },
   {
     id: 3,
-    img: require('@/assets/images/peoples.png'),
-    title: 'Соціофобія',
-    description: 'Будь самим собою',
-    routePath: '/quest/questThree',
+    title: '3',
+    description: 'В процесі',
+    routePath: '/quest/questOne',
   },
   {
     id: 4,
-    img: require('@/assets/images/elevator.png'),
-    title: 'Клаустрофобія',
-    description: 'Будь спокійнішим',
-    routePath: '/quest/questFour',
+    title: '4',
+    description: 'В процесі',
+    routePath: '/quest/questOne',
   },
   {
     id: 5,
-    img: require('@/assets/images/drop.png'),
-    title: 'Аквафобія',
-    description: 'Людина складається на 80% з води',
-    routePath: '/quest/questFive',
+    title: '5',
+    description: 'В процесі',
+    routePath: '/quest/questOne',
   },
   {
     id: 6,
-    img: require('@/assets/images/mountains.png'),
-    title: 'Акрофобія',
-    description: 'Рівнинна частина України над рівнем моря становить 175м',
-    routePath: '/quest/questSix',
+    title: '6',
+    description: 'В процесі',
+    routePath: '/quest/questOne',
   },
 ];
 
@@ -59,7 +53,6 @@ const Cards = ({
 }: {
   items: {
     id: number;
-    img: ImageProps['source'];
     title: string;
     description: string;
     routePath: string;
@@ -92,12 +85,7 @@ const Cards = ({
                 height: hp(23),
               }}
             >
-              <Image
-                source={item.img}
-                className="mb-2"
-                style={{ width: wp(15), height: hp(8) }}
-              />
-              <Text className="text-xs font-bold">{item.title}</Text>
+              <Text className="text-6xl font-bold">{item.title}</Text>
               <Text className="text-center text-xs">{item.description}</Text>
               <Text className="mt-2 text-xl font-semibold">Обрати</Text>
             </View>
@@ -108,11 +96,11 @@ const Cards = ({
   );
 };
 
-const Home = () => {
+const Index = () => {
   return (
     <BaseScreen>
-      <SafeAreaView className="mt-10 flex flex-1">
-        <View className="flex items-center justify-center">
+      <SafeAreaView className="mt-10">
+        <View className="items-center">
           <LinearGradient
             colors={ThemeColors.borderBoxWindowGradient}
             style={{
@@ -132,14 +120,16 @@ const Home = () => {
                 borderRadius: 10,
               }}
             >
-              <Text className="text-center text-2xl">Чудово!</Text>
+              <Text className="text-center text-2xl">Арахнофобія</Text>
             </View>
           </LinearGradient>
         </View>
-        <Cards items={items} />
+        <View>
+          <Cards items={items} />
+        </View>
       </SafeAreaView>
     </BaseScreen>
   );
 };
 
-export default Home;
+export default Index;

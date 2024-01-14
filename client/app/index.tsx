@@ -18,8 +18,8 @@ const Index = () => {
 
   const db = new ProfileDAO(SQLite.openDatabase('database.db'));
   useEffect(() => {
+    // db.dropUser();
     db.initUser();
-    db.dropUser();
     db.getUser().then((user) => {
       if (user) {
         setisAthorized(true);
