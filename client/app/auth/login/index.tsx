@@ -1,4 +1,4 @@
-import { BaseScreenAuth } from '@/components/BaseScreenAuth/BaseScreen';
+import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
 import { ButtonAuth } from '@/components/UI/ButtonAuth';
 import { InputLogin } from '@/components/UI/InputLogin';
 import { InputPassword } from '@/components/UI/InputPassword';
@@ -22,7 +22,7 @@ const Login = () => {
   });
   console.log(loginData);
   return (
-    <BaseScreenAuth>
+    <BaseScreen>
       <SafeAreaView className="mt-24 flex h-screen justify-between">
         <KeyboardAwareScrollView>
           <View className="mx-auto flex items-center justify-center">
@@ -103,7 +103,7 @@ const Login = () => {
           <ButtonAuth onPress={() => console.log('login')} textValue="Увійти" />
         </View>
       </SafeAreaView>
-    </BaseScreenAuth>
+    </BaseScreen>
   );
 };
 
