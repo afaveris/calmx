@@ -1,8 +1,9 @@
 import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
+import { ButtonAuth } from '@/components/UI/ButtonAuth';
 import { ThemeColors } from '@/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -14,88 +15,62 @@ const StepFour = () => {
 
   return (
     <BaseScreen>
-      <SafeAreaView className="m-5 mt-24">
-        <Image
-          className="h-44 w-44"
-          source={require('@/assets/images/hero.png')}
-        />
+      <SafeAreaView className="m-5 mt-24 flex h-screen justify-between">
+        <View className="flex items-center">
+          <View className="w-full">
+            <Image
+              className="h-44 w-44"
+              source={require('@/assets/images/hero.png')}
+            />
+          </View>
 
-        <LinearGradient
-          colors={ThemeColors.borderBoxWindowGradient}
-          style={{
-            width: wp(90),
-            height: hp(15),
-            borderRadius: 20,
-            transform: [{ rotate: '-180deg' }],
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <View
-            className="flex flex-col items-center justify-center bg-white"
-            style={{
-              width: wp(86),
-              height: hp(13),
-              borderRadius: 10,
-              transform: [{ rotate: '-180deg' }],
-            }}
-          >
-            <Text className="text-2xl">Круто!</Text>
-            <Text className="text-center text-xl">
-              Нумо я тобі розповім трішки про функціонал!
-            </Text>
-          </View>
-        </LinearGradient>
-        <LinearGradient
-          colors={ThemeColors.borderBoxInputGradient}
-          style={{
-            width: wp(90),
-            height: hp(8),
-            borderRadius: 20,
-            marginTop: hp(3),
-          }}
-        >
-          <View
-            className="flex items-center justify-center rounded-xl bg-white"
-            style={{
-              width: wp(87),
-              height: hp(6.5),
-              marginLeft: wp(1.5),
-              marginTop: hp(0.7),
-            }}
-          >
-            <TouchableOpacity onPress={() => router.push('')}>
-              <Text className="text-center text-xl">Впораюся самотужки!</Text>
-            </TouchableOpacity>
-          </View>
-        </LinearGradient>
-        <TouchableOpacity
-          onPress={() => router.push('/auth/register/stepFour')}
-        >
           <LinearGradient
-            colors={ThemeColors.borderInputGradient}
+            colors={ThemeColors.borderBoxWindowGradient}
             style={{
-              width: wp(90),
-              height: hp(8),
+              width: wp(80),
+              height: hp(15),
               borderRadius: 20,
-              marginTop: hp(3),
+              transform: [{ rotate: '-180deg' }],
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <View
-              className="flex items-center justify-center rounded-xl bg-white"
+              className="flex flex-col items-center justify-center bg-white"
               style={{
-                width: wp(87),
-                height: hp(6.5),
-                marginLeft: wp(1.5),
-                marginTop: hp(0.7),
+                width: wp(77),
+                height: hp(13),
+                borderRadius: 10,
+                transform: [{ rotate: '-180deg' }],
               }}
             >
-              <Text className="text-center text-2xl font-semibold">
-                Продовжити
+              <Text className="text-2xl">Круто!</Text>
+              <Text className="text-center text-xl">
+                Нумо я тобі розповім трішки про функціонал!
               </Text>
             </View>
           </LinearGradient>
-        </TouchableOpacity>
+          <View className="mt-24">
+            <ButtonAuth
+              onPress={() => {
+                router.push({
+                  pathname: '/home',
+                });
+              }}
+              textValue="Впораюся самотужки!"
+            />
+          </View>
+        </View>
+        <View className="flex items-center justify-center">
+          <ButtonAuth
+            onPress={() => {
+              router.push({
+                pathname: '/home',
+              });
+            }}
+            textValue="Продовжити"
+          />
+        </View>
       </SafeAreaView>
     </BaseScreen>
   );

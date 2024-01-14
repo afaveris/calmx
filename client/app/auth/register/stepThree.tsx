@@ -1,4 +1,5 @@
 import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
+import { ButtonAuth } from '@/components/UI/ButtonAuth';
 import { ProfileDAO } from '@/data/profileDAO';
 import { User } from '@/entities/user';
 import { ThemeColors } from '@/theme';
@@ -30,36 +31,40 @@ const StepThree = () => {
 
   return (
     <BaseScreen>
-      <SafeAreaView className="m-5 mt-24">
-        <Image
-          className="h-44 w-44"
-          source={require('@/assets/images/hero.png')}
-        />
+      <SafeAreaView className="m-5 mt-24 flex h-screen justify-between">
+        <View className="flex items-center justify-center">
+          <View className="w-full">
+            <Image
+              className="h-44 w-44"
+              source={require('@/assets/images/hero.png')}
+            />
+          </View>
 
-        <LinearGradient
-          colors={ThemeColors.borderBoxWindowGradient}
-          style={{
-            width: wp(90),
-            height: hp(15),
-            borderRadius: 20,
-            transform: [{ rotate: '-180deg' }],
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <View
-            className="flex flex-col items-center justify-center bg-white"
+          <LinearGradient
+            colors={ThemeColors.borderBoxWindowGradient}
             style={{
-              width: wp(86),
-              height: hp(13),
-              borderRadius: 10,
+              width: wp(80),
+              height: hp(15),
+              borderRadius: 20,
               transform: [{ rotate: '-180deg' }],
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <Text className="text-2xl">Чудово!</Text>
-            <Text className="text-xl">Тепер обери час для взаємодії</Text>
-          </View>
-        </LinearGradient>
+            <View
+              className="flex flex-col items-center justify-center bg-white"
+              style={{
+                width: wp(77),
+                height: hp(13),
+                borderRadius: 10,
+                transform: [{ rotate: '-180deg' }],
+              }}
+            >
+              <Text className="text-2xl">Чудово!</Text>
+              <Text className="text-xl">Тепер обери час для взаємодії</Text>
+            </View>
+          </LinearGradient>
+        </View>
         <View className="m-10 flex flex-row justify-between">
           <View>
             <LinearGradient
@@ -152,45 +157,28 @@ const StepThree = () => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={async () => {
-            const user = User.fromJSON({
-              id: 0,
-              name: item.name,
-              date_of_birth: item.date,
-              interaction_time: interactionTime,
-              interaction_date: interactionDate,
-            });
-            await db.insertUser(user);
-            router.push({
-              pathname: '/auth/register/stepFour',
-            });
-          }}
-        >
-          <LinearGradient
-            colors={ThemeColors.borderInputGradient}
-            style={{
-              width: wp(90),
-              height: hp(8),
-              borderRadius: 20,
-              marginTop: hp(3),
+        <View className="flex items-center justify-center">
+          <ButtonAuth
+            onPress={async () => {
+              const user = User.fromJSON({
+                id: 0,
+                login: item.login,
+                password: item.password,
+                name: item.name,
+                date_of_birth: item.date,
+                interaction_time:
+                  interactionTime.getHours() * 60 +
+                  interactionTime.getMinutes(),
+                interaction_date: interactionDate.getTime(),
+              });
+              db.insertUser(user);
+              router.push({
+                pathname: '/auth/register/stepFour',
+              });
             }}
-          >
-            <View
-              className="flex items-center justify-center rounded-xl bg-white"
-              style={{
-                width: wp(87),
-                height: hp(6.5),
-                marginLeft: wp(1.5),
-                marginTop: hp(0.7),
-              }}
-            >
-              <Text className="text-center text-2xl font-semibold">
-                Продовжити
-              </Text>
-            </View>
-          </LinearGradient>
-        </TouchableOpacity>
+            textValue="Продовжити"
+          />
+        </View>
       </SafeAreaView>
     </BaseScreen>
   );
