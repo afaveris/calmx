@@ -7,4 +7,6 @@ export const ThemeColors = {
   borderBoxWindowGradient: ['#B5ADF7', '#A3D4CB'],
   borderBoxInputGradient: ['#0500FF', '#704CD9', '#FFF5003B', '#0E8D76'],
   borderInputGradient: ['#FFFFFF', '#607FBC'],
+  rose500: '#F43F5E',
+  lightBlue: '#3065EE',
 };
