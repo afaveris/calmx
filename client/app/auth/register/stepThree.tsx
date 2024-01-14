@@ -1,8 +1,11 @@
-import { AuthBaseScreen } from '@/components/AuthBaseScreen/AuthBaseScreen';
+import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
+import { ProfileDAO } from '@/data/profileDAO';
+import { User } from '@/entities/user';
 import { ThemeColors } from '@/theme';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { CalendarDaysIcon } from 'react-native-heroicons/solid';
@@ -15,15 +18,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const StepThree = () => {
   const router = useRouter();
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const [interactionDate, setinteractionDate] = useState(new Date());
+  const [interactionTime, setinteractionTime] = useState(new Date());
   const [isDatePickerVisibleDate, setDatePickerVisibilityDate] =
     useState(false);
   const [isDatePickerVisibleTime, setDatePickerVisibilityTime] =
     useState(false);
 
+  const item = useLocalSearchParams();
+  const db = new ProfileDAO(SQLite.openDatabase('database.db'));
+
   return (
-    <AuthBaseScreen>
+    <BaseScreen>
       <SafeAreaView className="m-5 mt-24">
         <Image
           className="h-44 w-44"
@@ -78,11 +84,11 @@ const StepThree = () => {
                   <RNDateTimePicker
                     mode="date"
                     display="default"
-                    value={date}
+                    value={interactionDate}
                     maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
-                      const currentDate = selectedDate || date;
-                      setDate(currentDate);
+                      const currentDate = selectedDate || interactionDate;
+                      setinteractionDate(currentDate);
                       setDatePickerVisibilityDate(false);
                     }}
                   />
@@ -123,11 +129,11 @@ const StepThree = () => {
                   <RNDateTimePicker
                     mode="time"
                     display="default"
-                    value={time}
+                    value={interactionTime}
                     maximumDate={new Date()}
                     onChange={(event, selectedTime) => {
-                      const currentTime = selectedTime || time;
-                      setTime(currentTime);
+                      const currentTime = selectedTime || interactionTime;
+                      setinteractionTime(currentTime);
                       setDatePickerVisibilityTime(false);
                     }}
                   />
@@ -147,7 +153,19 @@ const StepThree = () => {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => router.push('/auth/register/stepFour')}
+          onPress={async () => {
+            const user = User.fromJSON({
+              id: 0,
+              name: item.name,
+              date_of_birth: item.date,
+              interaction_time: interactionTime,
+              interaction_date: interactionDate,
+            });
+            await db.insertUser(user);
+            router.push({
+              pathname: '/auth/register/stepFour',
+            });
+          }}
         >
           <LinearGradient
             colors={ThemeColors.borderInputGradient}
@@ -174,7 +192,7 @@ const StepThree = () => {
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
-    </AuthBaseScreen>
+    </BaseScreen>
   );
 };
 

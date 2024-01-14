@@ -8,64 +8,54 @@ export class ProfileDAO implements iProfileDAO {
     this.db = db;
   }
 
-  public async initUser(): Promise<void> {
-    await this.db.transaction((tx) => {
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS user' +
+  public initUser = async (): Promise<void> => {
+    await this.db.transactionAsync(async (tx) => {
+      await tx.executeSqlAsync(
+        'CREATE TABLE IF NOT EXISTS profile' +
           '(id INTEGER PRIMARY KEY NOT NULL, ' +
-          'username TEXT NOT NULL, ' +
-          'email TEXT NOT NULL, ' +
-          'social_network_id SERIAL NOT NULL, ' +
-          'date_of_birth DATE NOT NULL, ' +
-          'access_token TEXT NULL, ' +
-          'refresh_token TEXT NULL, ' +
-          'verified BOOLEAN NOT NULL DEFAULT FALSE);'
+          'name TEXT NOT NULL, ' +
+          'date_of_birth TEXT NOT NULL, ' +
+          'interaction_time TIMESTAMP NOT NULL, ' +
+          'interaction_date INTEGER NOT NULL);'
       );
     });
-    console.log('User table created');
-  }
+  };
 
-  public async insertUser(user: User): Promise<void> {
-    // console.log(user);
-    this.db.transaction((tx) => {
-      tx.executeSql(
-        'INSERT INTO user (username, email, social_network_id, date_of_birth, access_token, refresh_token, verified) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?);',
+  public insertUser = async (user: User): Promise<void> => {
+    console.log(user);
+    await this.db.transactionAsync(async (tx) => {
+      await tx.executeSqlAsync(
+        'INSERT INTO profile (name, date_of_birth, interaction_time, interaction_date) ' +
+          'VALUES (?, ?, ?, ?);',
         [
-          user.username,
-          user.password,
-          user.email,
-          user.socialNetworkId,
-          JSON.stringify(user.socialNetworkData),
-          user.dateOfBirth.toISOString(),
-          user.created_at.toISOString(),
-          user.updated_at.toISOString(),
+          user.name,
+          user.dateOfBirth,
+          user.interactionTime,
+          user.interactionDate,
         ]
       );
     });
-  }
+  };
 
-  public async getUser(): Promise<User | null> {
-    let data = null;
-    await this.db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM user ORDER BY id DESC LIMIT 1;',
-        [],
-        (_, { rows }) => {
-          data = rows;
-          console.log(data);
-        }
-      );
+  public getUser = async (): Promise<User | null> => {
+    let user: User | null = null;
+    await this.db.transactionAsync(async (tx) => {
+      await tx
+        .executeSqlAsync('SELECT * FROM profile ORDER BY id DESC LIMIT 1;', [])
+        .then((result) => {
+          console.log(result.rows);
+          user = User.fromJSON(result.rows[0]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
-    if (data !== null) {
-      return User.fromJSON(data[0]);
-    }
-    return null;
-  }
+    return user;
+  };
 
-  public async dropUser(): Promise<void> {
-    this.db.transaction((tx) => {
-      tx.executeSql('DROP TABLE IF EXISTS user;');
+  public dropUser = async (): Promise<void> => {
+    await this.db.transactionAsync(async (tx) => {
+      await tx.executeSqlAsync('DELETE FROM profile;');
     });
-  }
+  };
 }

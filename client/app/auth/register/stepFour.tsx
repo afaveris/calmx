@@ -1,4 +1,4 @@
-import { AuthBaseScreen } from '@/components/AuthBaseScreen/AuthBaseScreen';
+import { BaseScreen } from '@/components/BaseScreen/BaseScreen';
 import { ThemeColors } from '@/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -13,7 +13,7 @@ const StepFour = () => {
   const router = useRouter();
 
   return (
-    <AuthBaseScreen>
+    <BaseScreen>
       <SafeAreaView className="m-5 mt-24">
         <Image
           className="h-44 w-44"
@@ -97,7 +97,7 @@ const StepFour = () => {
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
-    </AuthBaseScreen>
+    </BaseScreen>
   );
 };
 
